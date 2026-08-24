@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #07091a; /* base background */
+  color: #e7e9f5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Thin, themed scrollbar so scrollable lists match the dark UI */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Numbers/stats use the mono face to read as a HUD readout */
+.font-mono {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
