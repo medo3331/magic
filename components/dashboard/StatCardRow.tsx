@@ -9,11 +9,14 @@ interface StatCardProps {
   index: number;
 }
 
-/** One stat tile: icon chip + label + count-up value (mono) + unit. */
+/**
+ * One stat tile: icon chip + label + count-up value (mono) + unit.
+ * Hover lift is CSS-only (transform + shadow) — no JS state.
+ */
 export function StatCard({ stat, index }: StatCardProps) {
   return (
     <Reveal index={index}>
-      <GlassCard className="h-full p-4">
+      <GlassCard className="h-full p-4 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(124,92,255,0.12)]">
         <div className="flex items-center gap-3">
           <IconBadge icon={stat.icon} color={stat.accent} bg={`${stat.accentSolid}/15`} />
           <div className="min-w-0">
