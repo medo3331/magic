@@ -6,6 +6,7 @@ import { LessonList } from "@/components/dashboard/LessonList";
 import { WeeklyAnalytics } from "@/components/dashboard/WeeklyAnalytics";
 import { AchievementsStrip } from "@/components/dashboard/AchievementsStrip";
 import { WorshipShortcutCard } from "@/components/dashboard/WorshipShortcutCard";
+import { NextPrayerWidget } from "@/components/dashboard/NextPrayerWidget";
 import { AssistantFab } from "@/components/dashboard/AssistantFab";
 import { Reveal } from "@/components/ui/Reveal";
 import {
@@ -57,11 +58,19 @@ export default function DashboardPage() {
           {/* LESSON LIST */}
           <LessonList lessons={mockLessons} excludeId={mockNextLesson.id} />
 
-          {/* WORSHIP SHORTCUT → /worship (navigation + preview only) */}
+          {/* WORSHIP: live next-prayer island + static shortcut to /worship */}
+          <NextPrayerWidget
+            index={4}
+            latitude={30.0444}
+            longitude={31.2357}
+            timezone="Africa/Cairo"
+            calculationMethod="egyptian"
+            madhab="shafi"
+          />
           <WorshipShortcutCard
             quranWirdRead={mockWorshipPreview.quranWirdRead}
             quranWirdTarget={mockWorshipPreview.quranWirdTarget}
-            index={4}
+            index={5}
           />
         </div>
       </main>
