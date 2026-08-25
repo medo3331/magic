@@ -36,3 +36,28 @@ body {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
 }
+
+/* Dashboard hero: single restrained gradient wash, very slow drift */
+.hero-wash {
+  background: radial-gradient(
+    60% 90% at 85% 0%,
+    rgba(124, 92, 255, 0.08) 0%,
+    transparent 70%
+  );
+  animation: hero-wash-drift 30s ease-in-out infinite alternate;
+}
+
+@keyframes hero-wash-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-3%, 2%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-wash {
+    animation: none;
+  }
+}

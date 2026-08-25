@@ -242,3 +242,47 @@ export const mockExplanation: Record<ExplanationMode, LessonSection[]> = {
     },
   ],
 };
+
+/* =========================================================================
+ * Dashboard redesign payloads (premium SaaS restyle)
+ * Demo/mock data only — swap with real API payloads later.
+ * ========================================================================= */
+
+/** One badge in the dashboard achievements strip. */
+export interface Achievement {
+  id: string;
+  name: string;
+  unlocked: boolean;
+  /** Unlocked badges get the gold accent. */
+  gold?: boolean;
+  /** For locked badges: progress toward unlocking. */
+  progress?: { current: number; target: number };
+}
+
+export const mockAchievements: Achievement[] = [
+  { id: "streak-7", name: "سلسلة ٧ أيام", unlocked: true, gold: true },
+  { id: "lessons-10", name: "١٠ دروس مكتملة", unlocked: true, gold: false },
+  {
+    id: "xp-2500",
+    name: "٢٥٠٠ نقطة",
+    unlocked: false,
+    progress: { current: 2450, target: 2500 },
+  },
+];
+
+/** Study minutes per weekday (oldest → newest, RTL display right→left). */
+export const mockWeeklyStudy = [
+  { day: "السبت", minutes: 45 },
+  { day: "الأحد", minutes: 30 },
+  { day: "الاثنين", minutes: 60 },
+  { day: "الثلاثاء", minutes: 20 },
+  { day: "الأربعاء", minutes: 55 },
+  { day: "الخميس", minutes: 80 },
+  { day: "الجمعة", minutes: 35 },
+];
+
+/**
+ * Worship preview readout for the dashboard shortcut card.
+ * Mirrors what the /worship page shows; the card itself is navigation-only.
+ */
+export const mockWorshipPreview = { quranWirdRead: 6, quranWirdTarget: 10 };

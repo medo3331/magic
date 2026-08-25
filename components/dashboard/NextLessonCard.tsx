@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Play, ArrowLeft } from "lucide-react";
+import { Play, ArrowLeft, Clock } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ProgressRing } from "@/components/ui/ProgressRing";
 import { Button } from "@/components/ui/Button";
@@ -29,7 +29,10 @@ export function NextLessonCard({
 }: NextLessonCardProps) {
   return (
     <Reveal index={index}>
-      <GlassCard glow className="p-6">
+      <GlassCard
+        glow
+        className="relative overflow-hidden p-6 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[#7C5CFF]/60 before:to-transparent"
+      >
         {/* Top labels */}
         <div className="mb-2 flex items-center justify-between">
           <span className="rounded-full bg-[#7C5CFF]/15 px-3 py-1 text-xs font-semibold text-[#B69CFF]">
@@ -53,9 +56,17 @@ export function NextLessonCard({
             <p className="mt-1 text-sm text-[#9AA0C0]">
               مدخل بصري وأكاديمي وتطبيقي للدوال المثلثية.
             </p>
-            <p className="mt-2 text-xs text-[#9AA0C0]" dir="ltr">
-              ⚡ +{xpReward} XP · الدرس 2 من 3
-            </p>
+
+            {/* Meta row: estimated time + XP reward */}
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2 md:justify-start">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-xs text-[#9AA0C0]">
+                <Clock size={14} aria-hidden />
+                {lesson.durationMinutes} دقيقة
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#7C5CFF]/10 px-3 py-1 text-xs font-medium text-[#B69CFF]">
+                +{xpReward} XP
+              </span>
+            </div>
 
             <div className="mt-5 flex justify-center md:justify-start">
               <Link href={`/lesson/${lesson.id}`} className="inline-flex">
