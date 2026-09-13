@@ -8,57 +8,69 @@ import { AchievementsStrip } from "@/components/dashboard/AchievementsStrip";
 import { WorshipShortcutCard } from "@/components/dashboard/WorshipShortcutCard";
 import { NextPrayerWidget } from "@/components/dashboard/NextPrayerWidget";
 import { AssistantFab } from "@/components/dashboard/AssistantFab";
+import { SecondaryProgress } from "@/components/dashboard/SecondaryProgress";
 import { Reveal } from "@/components/ui/Reveal";
 import {
+  buildNavItems,
+  buildQuickActions,
   buildStatCards,
-  mockAchievements,
-  mockLessons,
-  mockNavItems,
-  mockNextLesson,
-  mockQuickActions,
-  mockStats,
-  mockUser,
-  mockWeeklyStudy,
-  mockWorshipPreview,
-} from "@/lib/mock-data";
+  getDashboardData,
+} from "@/lib/dashboard-data";
 
 /**
  * Dashboard page (App Router, server component).
- * Mock data is passed into fully-typed presentational components; swapping in a
- * real API means replacing these imports with a fetched payload of the same
- * `types`.
+ *
+ * Data flows ONE way: lib/dashboard-data.ts (server data layer) → these
+ * presentational components. Every value is REAL or honestly empty — no mock
+ * users, no fake statistics, no dead links.
  *
  * Section order: Hero → Stats → Next lesson → Weekly analytics →
  * Achievements → Lesson list → Worship shortcut (+ floating assistant entry).
  */
 export default function DashboardPage() {
-  const stats = buildStatCards(mockStats);
+  const {
+    user,
+    stats,
+    nextLesson,
+    recentLessons,
+    weeklyStudy,
+    achievements,
+  } = getDashboardData();
+
+  const statCards = buildStatCards(stats ?? null);
 
   return (
     <div className="flex min-h-screen bg-[#07091A]">
-      <Sidebar items={mockNavItems} user={mockUser} />
+      <Sidebar items={buildNavItems("/dashboard")} user={user} />
 
       <main className="flex-1 px-4 py-6 md:px-6 md:py-8">
         <div className="mx-auto flex max-w-5xl flex-col gap-6">
           {/* HERO: avatar signature + greeting + quick actions + stat chips */}
-          <DashboardHero user={mockUser} actions={mockQuickActions} stats={stats} />
+          <DashboardHero
+            user={user}
+            actions={buildQuickActions()}
+            stats={statCards}
+          />
 
-          {/* STAT ROW (full tiles under the hero band) */}
-          <StatCardRow stats={stats} />
+          {/* STAT ROW — renders nothing until real stats are bound */}
+          <StatCardRow stats={statCards} />
 
-          {/* NEXT LESSON (most prominent after hero) */}
-          <NextLessonCard lesson={mockNextLesson} xpReward={100} index={1} />
+          {/* NEXT LESSON — dynamic CTA / honest empty state */}
+          <NextLessonCard lesson={nextLesson} index={1} />
 
-          {/* WEEKLY ANALYTICS */}
-          <WeeklyAnalytics data={mockWeeklyStudy} index={2} />
+          {/* WEEKLY ANALYTICS — real series only */}
+          <WeeklyAnalytics data={weeklyStudy} index={2} />
 
-          {/* ACHIEVEMENTS STRIP */}
-          <AchievementsStrip achievements={mockAchievements} index={3} />
+          {/* ACHIEVEMENTS STRIP — derived from real progress only */}
+          <AchievementsStrip achievements={achievements} index={3} />
 
-          {/* LESSON LIST */}
-          <LessonList lessons={mockLessons} excludeId={mockNextLesson.id} />
+          {/* LESSON LIST — real rows only */}
+          <LessonList lessons={recentLessons} excludeId={nextLesson?.id} />
 
-          {/* WORSHIP: live next-prayer island + static shortcut to /worship */}
+          {/* SECONDARY v0 — smallest progress indicator (temporary % + engagement) */}
+          <SecondaryProgress completedDays={undefined} totalDays={undefined} />
+
+          {/* WORSHIP: live next-prayer island + live daily-progress shortcut */}
           <NextPrayerWidget
             index={4}
             latitude={30.0444}
@@ -67,11 +79,7 @@ export default function DashboardPage() {
             calculationMethod="egyptian"
             madhab="shafi"
           />
-          <WorshipShortcutCard
-            quranWirdRead={mockWorshipPreview.quranWirdRead}
-            quranWirdTarget={mockWorshipPreview.quranWirdTarget}
-            index={5}
-          />
+          <WorshipShortcutCard index={5} />
         </div>
       </main>
 
